@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fields>
+        <fullName>Interview_Dept__c</fullName>
+        <inlineHelpText>This is the department this person usually performs interviews for, though they can still be added as interviewers on positions for other departments</inlineHelpText>
+        <label>Interview Dept</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Engineering</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Finance</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>IT</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Sales</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Support</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Legacy_Employee_Num__c</fullName>
+        <externalId>true</externalId>
+        <label>Legacy Employee Num</label>
+        <length>20</length>
+        <type>Text</type>
+    </fields>
+    <fields>
+        <fullName>OrgExpirationDate__c</fullName>
+        <label>組織有効期限</label>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>People_Manager__c</fullName>
+        <defaultValue>false</defaultValue>
+        <label>People Manager?</label>
+        <type>Checkbox</type>
+    </fields>
+</CustomObject>

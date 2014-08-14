@@ -1,0 +1,58 @@
+<apex:page cache="true" expires="999999999" title="商談一括更新について" label="商談一括更新について">
+<apex:sectionHeader title="商談一括更新について"/>
+<apex:outputPanel style="width:55%;float:left;padding:0 10px 0" layout="block">
+商談一括更新では、自分が所有する商談の一覧画面を生成し、標準機能の拡張リストビューでは更新できない金額とフェーズを一括で更新することが出来ます。
+<br/><br/>
+検索結果には「更新」、「詳細」、「編集」、「商談名」、「取引先」、「金額」、「完了予定日」、「フェーズ」、「活動作成」の項目が表示され、
+一つ一つの商談画面を開くことなくまとめて更新が可能です。<br /><br />
+なお、このアプリケーションは、ApexコードとVisualforceを利用しているため、Apexを使用可能なEditionで利用する必要があります。<br />
+インストール後は、このタブは消去しても問題ありません。
+<br /><br />
+【使用方法】<br />
+1.「商談一括更新」タブをクリック。<br />
+2. 検索条件を入力し、検索ボタンを押すと該当する検索結果が画面に表示されます。<br />
+3. 検索結果を編集すると、自動的に更新チェックが入り、背景が黄色なるため、自身がどの商談を変更したか一目で分かる様になっています<br />
+4. 「一括更新」ボタンを押すことで、更新チェックが恩になっている商談のデータが一括で更新されます。<br />
+<br /><br />
+【カスタマイズ方法】<br />
+個々の組織に追加したカスタム項目を一括更新画面に含めるには、以下の様にカスタマイズを行ないます。<br /><br />
+1. visualforceページで「sfdcjoppupdate」を編集します。<br />
+2. 90〜93行目にあるコードのサンプルを元に96行目付近から133行目付近の間に並んでいる項目の間にソースコードを追加します。<br />
+3. 変更を保存します。
+<br /><br /><br />
+【その他】<br />
+<br />
+「編集」<br />
+クリックすると商談編集画面が別画面で開きます。<br />
+<br />
+「活動作成」<br />
+<br />
+クリックすると商談に関連した活動の作成画面が別画面で開きます。<br /><br />
+</apex:outputPanel>
+<apex:outputPanel style="width:40%;height:100%;float:right;padding:0 10px;border:2px #FF0000 solid" layout="block">
+<br />
+<apex:outputPanel style="text-align:center;margin-left:auto;margin-right:auto" layout="block">
+  <apex:image value="http://www.salesforce.com/common/assets/images/sf-logo.png" />
+</apex:outputPanel>
+<br />
+株式会社セールスフォース・ドットコムについて<br />
+<br /> 
+セールスフォース・ドットコムは、カスタマー・リレーションシップ・マネージメント(CRM)およびクラウドコンピューティングプラットフォームのリーディングカンパニーです。<br /><br />
+同社のオンデマンドCRMアプリケーションは、企業の規模や業種、拠点を問わず、企業の複雑な情報管理と共有を実現します。 Salesforce SFA、Salesforce Marketing、Salesforce Service &amp; Supportは、Force.comプラットフォーム上に構築されています。<br /><br /><br />
+Force.comプラットフォームを活用することにより、ユーザやシステムインテグレータ、独立系ソフトウェアベンダー(ISV)は、同社アプリケーションのカスタマイズや他システムとの連携はもちろん、新たなオンデマンド・エンタープライズ・アプリケーションの作成が可能です。AppExchangeサイトでは、開発者、パートナー、ユーザの皆様が自ら開発したオンデマンド・アプリケーションを交換・共有する場(オンデマンド・マーケットプレイス)を提供しています。<br /><br /><br />
+</apex:outputPanel>
+<apex:pageBlock title="バージョン履歴" >
+<apex:pageBlockSection title="2.0.4" columns="1">
+    <apex:outputtext value="[Improved]検索結果を組織毎にカスタマイズをし易くするように変更" />
+</apex:pageBlockSection>
+
+<apex:pageBlockSection title="2.0.3" columns="1">
+    <apex:outputtext value="[Improved]検索条件で自身の商談か全ての商談か、フェーズの複数選択、ソートの機能を追加" />
+    <apex:outputtext value="[Fixed]商談が1000件以上存在する際にエラーとなる問題を修正。最高で200件のデータを表示する様に変更" />
+</apex:pageBlockSection>
+
+<apex:pageBlockSection title="2.0.2">
+    <apex:outputtext value="[Improved]Visualforceに対応" />
+</apex:pageBlockSection>
+</apex:pageBlock>
+</apex:page>

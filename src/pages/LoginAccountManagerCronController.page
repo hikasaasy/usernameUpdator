@@ -1,0 +1,35 @@
+<apex:page controller="LoginAccountManagerCron" action="{!refresh}">
+    <style>
+        table#status {
+            text-align: right;
+            margin: auto 0 auto auto;
+        }
+        table#status th {
+            text-align: right;
+        }
+        table#status td {
+            text-align: left;
+        }
+    </style>
+    <apex:sectionHeader title="Login Account Manager Cron Setting" />
+    <apex:outputPanel id="result">
+        <apex:form >
+            <apex:pageBlock title="Schedule" id="theCronTrigger">
+                <apex:pageMessages />
+                <apex:pageBlockButtons location="top">
+                    <apex:actionPoller interval="500" action="{!refresh}" reRender="result"/>
+                    <apex:commandButton value="Start" action="{!start}" reRender="result"/>
+                    <apex:commandButton value="Stop" action="{!deleteAll}" reRender="result"/>
+                    <apex:commandButton value="Refresh" action="{!refresh}" reRender="result"/>
+                    <apex:commandButton value="Execute Now" action="{!run}" reRender="result"/>
+                </apex:pageBlockButtons>
+                <apex:pageBlockTable value="{!results}" var="r" rendered="{!NOT(ISNULL(results))}">
+                    <apex:column value="{!r.id}"/>
+                    <apex:column value="{!r.CronExpression}"/>
+                    <apex:column value="{!r.TimesTriggered}"/>
+                    <apex:column value="{!r.NextFireTime}"/>
+                </apex:pageBlockTable>
+            </apex:pageBlock>
+        </apex:form>
+    </apex:outputPanel>
+</apex:page>

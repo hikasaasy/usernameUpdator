@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customSettingsType>Hierarchy</customSettingsType>
+    <fields>
+        <fullName>usernameUpdated__c</fullName>
+        <defaultValue>false</defaultValue>
+        <label>ユーザ名更新済み</label>
+        <type>Checkbox</type>
+    </fields>
+    <label>組織設定</label>
+</CustomObject>

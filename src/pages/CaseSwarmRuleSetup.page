@@ -1,0 +1,80 @@
+<apex:page title="自動ケースフォロールール設定" controller="CaseSwarmRuleSetup">
+    <script>
+        // Automatically run hideAll() on page load
+        var previousOnload = window.onload;        
+        window.onload = function() { 
+            if (previousOnload) { 
+                previousOnload();
+            }
+            hideAll();
+            
+            // Defaults to the first radio selection
+            document.getElementById('j_id0:j_id3:j_id4:step1Options:0').checked = true;
+        }
+    
+        function hideAll(value) {
+            document.getElementById('statusFilter').style.display = 'none';
+            document.getElementById('priorityFilter').style.display = 'none';
+            document.getElementById('typeFilter').style.display = 'none';
+    
+            if (value == '指定する状況のケース') {
+                document.getElementById('statusFilter').style.display = 'block';
+            }
+    
+            if (value == '指定する優先度のケース') {
+                document.getElementById('priorityFilter').style.display = 'block';
+            }
+    
+            if (value == '指定する種別のケース') {
+                document.getElementById('typeFilter').style.display = 'block';
+            }
+        }
+    
+    </script>
+
+   <div class="bPageTitle">
+       <div class="ptBody secondaryPalette">
+           <div class="content"><img src="/s.gif" alt="Case Swarm Rule"  class="pageTitleIcon" title="Case Swarm Rule"/>
+               <h1 class="pageType">ケース自動フォロールール設定<span  class="titleSeparatingColon">:</span></h1>
+               <h2 class="pageDescription">新規ケース自動フォロールール</h2>
+               <div class="blank">&nbsp;</div>
+           </div>
+       </div>
+   </div>
+
+    <apex:messages styleClass="error"/>
+
+    <apex:form >
+        <apex:pageBlock title="ステップ1: 自動フォローするケースの条件を選択してください。">
+
+            <div id="radioDiv"><apex:selectRadio id="step1Options" value="{!step1}" onclick="hideAll(this.value)" layout="pageDirection" required="true">
+                <apex:selectOption itemValue="全てのケース" itemLabel="全てのケース" /><!--All Cases-->
+                <apex:selectOption itemValue="自分が所有しているケース" itemLabel="自分が所有しているケース" /><!--Only Cases for Accounts I Own-->
+                <apex:selectOption itemValue="指定する状況のケース" itemLabel="指定する状況のケース" /><!--Only Cases with a certain Status-->
+                <apex:selectOption itemValue="指定する優先度のケース" itemLabel="指定する優先度のケース" /><!--Only Cases with a certain Priority-->
+                <apex:selectOption itemValue="指定する種別のケース" itemLabel="指定する種別のケース" /><!--Only Cases of a certain Type-->
+            </apex:selectRadio></div>
+
+            <p><div id="statusFilter">状況：&nbsp;&nbsp; <apex:selectList value="{!withStatus}" multiselect="false" size="1">
+                <apex:selectOptions value="{!statusOptions}"/>
+            </apex:selectList></div></p>
+
+            <p><div id="priorityFilter">優先度：&nbsp;&nbsp; <apex:selectList value="{!withPriority}" multiselect="false" size="1">
+                <apex:selectOptions value="{!priorityOptions}"/>
+            </apex:selectList></div></p>
+
+            <p><div id="typeFilter">種別：&nbsp;&nbsp; <apex:selectList value="{!withType}" multiselect="false" size="1">
+                <apex:selectOptions value="{!typeOptions}"/>
+            </apex:selectList></div></p>
+        </apex:pageBlock>
+
+        <apex:pageBlock title="ステップ2: 自動フォローさせる公開グループを選択してください。">
+        
+            <p>公開グループ：&nbsp;&nbsp; <apex:selectList value="{!followGroup}" multiselect="false" size="1">
+                <apex:selectOptions value="{!publicGroups}"/>
+            </apex:selectList></p>
+
+            <p><apex:commandButton value="保存" action="{!action}" rerender="dynamic"/></p>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

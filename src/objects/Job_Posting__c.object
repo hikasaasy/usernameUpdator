@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <deploymentStatus>Deployed</deploymentStatus>
+    <enableHistory>true</enableHistory>
+    <enableReports>true</enableReports>
+    <fields>
+        <fullName>Job_Posting_Site__c</fullName>
+        <label>Job Posting Site</label>
+        <referenceTo>Job_Posting_Site__c</referenceTo>
+        <relationshipLabel>Job Postings</relationshipLabel>
+        <relationshipName>R00N100000050LppEAE</relationshipName>
+        <relationshipOrder>0</relationshipOrder>
+        <type>MasterDetail</type>
+    </fields>
+    <fields>
+        <fullName>Position__c</fullName>
+        <label>Position</label>
+        <referenceTo>Position__c</referenceTo>
+        <relationshipLabel>Job Postings</relationshipLabel>
+        <relationshipName>R00N100000050LpqEAE</relationshipName>
+        <relationshipOrder>1</relationshipOrder>
+        <type>MasterDetail</type>
+    </fields>
+    <label>Job Posting</label>
+    <listViews>
+        <fullName>All</fullName>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews>
+    <nameField>
+        <displayFormat>JOBPOST-{0000}</displayFormat>
+        <label>Job Posting Number</label>
+        <type>AutoNumber</type>
+    </nameField>
+    <pluralLabel>Job Postings</pluralLabel>
+    <searchLayouts/>
+    <sharingModel>ControlledByParent</sharingModel>
+</CustomObject>

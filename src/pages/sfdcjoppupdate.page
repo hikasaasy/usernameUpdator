@@ -1,0 +1,147 @@
+<apex:page id="bulkOppUpdatePage" title="商談一括更新" label="商談一括更新"  controller="SfdcjOppUpdateController" action="{!init}" tabstyle="sfdcjoppupdate__tab" cache="false">
+<script type="text/javascript">
+    //Messageを一定時間後に非表示にする
+    window.onload = function(){
+        setTimeout("document.getElementById('bulkOppUpdatePage:messagearea').style.display='none';", 5000);
+    };
+</script>
+<apex:sectionHeader title="商談一括更新" />
+<apex:pageMessages id="messagearea" showDetail="false" />
+
+<apex:form >
+<apex:outputpanel id="searchcriteria">
+  <apex:pageBlock title="検索条件">    
+    <apex:panelgrid id="searchPanel" columns="8">
+      <apex:outputLabel value="{!$ObjectType.SfdcjOppupdateCriteria__c.fields.OpportunitiesOwner__c.label} : " for="OpportunitiesOwner" />
+      <apex:selectList id="OpportunitiesOwner" size="1" multiselect="false" value="{!criteria.OpportunitiesOwner__c}">
+          <apex:selectOptions value="{!ownerTypes}"/>
+      </apex:selectList>
+      <apex:outputLabel value="{!$ObjectType.Opportunity.fields.name.label} : " for="criteria_Name" />
+          <apex:inputtext id="criteria_Name" value="{!criteria.name__c}" />
+      <apex:outputLabel value=" {!$ObjectType.Opportunity.fields.closeDate.label} : " for="criteria_CloseDate" />
+      <apex:inputField id="criteria_CloseDate" value="{!criteria.startDate__c}" />
+      <apex:outputLabel value=" ～ " for="criteriaTo_CloseDate" />
+      <apex:inputfield id="criteriaTo_CloseDate" value="{!criteria.endDate__c}" />
+    </apex:panelgrid>
+    <apex:panelgrid columns="6">
+      <apex:outputLabel value=" {!$ObjectType.Opportunity.fields.stageName.label} : " for="criteria_StageName"/>
+      <apex:selectList size="5" multiselect="true" id="criteria_StageName" value="{!selectedStage}" >
+          <apex:selectOptions value="{!stageNames}"/>
+      </apex:selectList>
+      <apex:outputLabel value="{!$ObjectType.SfdcjOppupdateCriteria__c.fields.sort__c.label} : " for="criteria_sort" />
+      <apex:selectList size="1" multiselect="false" id="criteria_sort" value="{!criteria.sort__c}">
+          <apex:selectOptions value="{!sortFields}"/>
+      </apex:selectList>
+      <apex:outputLabel value="{!$ObjectType.SfdcjOppupdateCriteria__c.fields.sortOrder__c.label} : " for="criteria_sortOrder" />
+      <apex:selectList size="1" multiselect="false" id="criteria_sortOrder" value="{!criteria.sortOrder__c}">
+          <apex:selectOptions value="{!sortOrders}"/>
+      </apex:selectList>
+    </apex:panelgrid>
+    <apex:commandButton value="検索" action="{!search}" reRender="searchresult,messagearea" status="searchStatus" />
+    <apex:commandButton value="画面クリア" action="{!clear}" immediate="true"/>
+  </apex:pageBlock>
+</apex:outputpanel>
+</apex:form>
+
+<!-- Status Message -->
+<hr />
+<apex:actionStatus startText="データの検索中..." stopText="" id="searchStatus" />
+<apex:actionStatus startText="データを更新しています..." stopText="" id="updateStatus" />
+<apex:actionStatus startText="検索結果をクリアしています..." stopText="" id="clearStatus" />
+<apex:actionStatus startText="変更前のデータを再読み込みしています..." stopText="" id="cancelStatus" />
+
+<apex:outputpanel id="searchresult">
+  <apex:pageBlock title="検索結果" rendered="{!AND(opplist.size == 0,searched)}">
+  該当するデータはありません
+  </apex:pageBlock>
+
+<apex:form id="resultForm">
+  <apex:pageBlock id="resultBlock" title="検索結果" rendered="{!AND(opplist.size >0,searched)}">
+  <apex:pageBlockButtons >
+      <apex:commandButton value="一括更新" action="{!bulkUpdate}" onclick="if(confirm('更新チェックの付いたデータを一括更新します。よろしいですか？')){return true;};return false;" />
+      <apex:commandButton value="編集の取消" action="{!cancel}" immediate="true" status="cancelStatus" rerender="searchresult" />
+  </apex:pageBlockButtons>
+      <apex:pageblockTable id="resultTable" value="{!oppList}" var="oppDto">
+            <apex:column style="width:30px">
+            <apex:facet name="header"><apex:outputText value="更新" /></apex:facet>
+              <apex:inputcheckbox id="updateChecked" value="{!oppDto.checked}" />
+            </apex:column>
+            <apex:column style="width:40px">
+            <apex:facet name="header"><apex:outputText value="詳細" /></apex:facet>
+              <apex:outputlink target="_blank" value="/{!oppDto.opp.id}"><apex:outputText value="詳細" /></apex:outputLink> 
+            </apex:column>
+            <apex:column style="width:40px">
+            <apex:facet name="header"><apex:outputText value="編集" /></apex:facet>
+              <apex:outputlink target="_blank" value="/{!oppDto.opp.id}/e?retURL=%2F{!oppDto.opp.id}"><apex:outputText value="編集" /></apex:outputLink> 
+            </apex:column>
+
+
+
+
+            <!-- ========================= -->
+            <!-- カラムを編集する場合はここから -->
+            <!-- ========================= -->
+
+
+            <!--
+            [カラム追加の為のサンプルコード]
+            カラムを追加する場合は、以下の4行を、「フィールドのAPI参照名」の部分を表示したいカラム名に直して追加して下さい。 
+                        
+            <apex:column style="width:160px">
+              <apex:facet name="header"><apex:outputText value="{!$ObjectType.Opportunity.fields.「フィールドのAPI参照名」.label}" /></apex:facet>
+              <apex:inputfield style="width:150px" onchange="document.getElementById('{!$Component.updateChecked}').checked = true;this.style.background='yellow'" value="{!oppDto.opp.「フィールドのAPI参照名」}"/> 
+            </apex:column>
+                        
+            -->
+
+            <!-- 商談名 -->
+            <apex:column style="width:160px">
+              <apex:facet name="header">
+                  <apex:outputText value="{!$ObjectType.Opportunity.fields.name.label}"/>
+              </apex:facet>
+              <apex:inputfield style="width:150px" onchange="document.getElementById('{!$Component.updateChecked}').checked = true;this.style.background='yellow'" value="{!oppDto.opp.name}"/> 
+            </apex:column>
+
+
+            <!-- 取引先 -->
+            <apex:column style="width:200px">
+              <apex:facet name="header"><apex:outputText value="{!$ObjectType.Account.label}" /></apex:facet>
+              <apex:outputField style="width:190px" value="{!oppDto.opp.accountId}" />
+            </apex:column>
+
+
+            <!-- 金額 -->
+            <apex:column style="width:90px">
+              <apex:facet name="header"><apex:outputText value="{!$ObjectType.Opportunity.fields.amount.label}" /></apex:facet>
+              <apex:inputfield id="amount" value="{!oppDto.opp.amount}" onchange="document.getElementById('{!$Component.updateChecked}').checked = true;this.style.background='yellow'" style="width:70px"/>
+            </apex:column>
+
+
+            <!-- 完了予定日 -->
+            <apex:column style="width:70px">
+              <apex:facet name="header"><apex:outputLabel value="{!$ObjectType.Opportunity.fields.closeDate.label}" /></apex:facet>
+              <apex:inputField value="{!oppDto.opp.closeDate}" onchange="document.getElementById('{!$Component.updateChecked}').checked = true;this.style.background='yellow'" style="width:70px"/> 
+            </apex:column>
+
+            <!-- フェーズ -->
+            <apex:column style="padding-left:10px;width:120px">
+              <apex:facet name="header"><apex:outputText value="{!$ObjectType.Opportunity.fields.stageName.label}" /></apex:facet>
+              <apex:inputfield value="{!oppDto.opp.stageName}" onchange="document.getElementById('{!$Component.updateChecked}').checked = true;this.style.background='yellow'" style="width:110px"/> 
+            </apex:column>
+
+
+
+            <!-- ========================= -->
+            <!-- カラムを編集する場合はここまで -->
+            <!-- ========================= -->
+            
+            <apex:column >
+              <apex:facet name="header"><apex:outputText value="{!$ObjectType.Event.label}作成" /></apex:facet>
+              <apex:outputlink value="/00U/e?what_id={!oppDto.opp.id}&retURL=/{!oppDto.opp.id}" target="_blank">{!$ObjectType.event.label}<apex:outputText value="作成" /></apex:outputLink> 
+            </apex:column>
+
+          </apex:pageblockTable>
+    </apex:pageBlock> 
+   </apex:form>
+  </apex:outputpanel>
+</apex:page>

@@ -1,0 +1,9 @@
+<apex:page controller="OrganizationInfoController" action="{!init}">
+    <apex:pageMessages ></apex:pageMessages>
+    <apex:pageBlock >
+    	<apex:pageBlockSection >
+        	<apex:outputField value="{!org.Name}"/>
+        	<apex:outputField value="{!org.TrialExpirationDate}"/>
+        </apex:pageBlockSection>
+    </apex:pageBlock>
+</apex:page>
