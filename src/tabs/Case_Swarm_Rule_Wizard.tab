@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<CustomTab xmlns="http://soap.sforce.com/2006/04/metadata">
-    <description>ウィザードで定義したルール条件に従ってChatterでケースを自動フォローすることを、公開グループに設定する。</description>
-    <icon>Cloud_Swarm/Cloud_Swarm_Icon_32x32.png</icon>
-    <label>新規ケース自動フォロールール</label>
-    <mobileReady>false</mobileReady>
-    <motif>Custom283: ワイドテレビ</motif>
-    <page>CaseSwarmRuleSetup</page>
-</CustomTab>

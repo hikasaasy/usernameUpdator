@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<CustomTab xmlns="http://soap.sforce.com/2006/04/metadata">
-    <label>Login Account Manager Cron Controll</label>
-    <mobileReady>false</mobileReady>
-    <motif>Custom25: 目覚まし時計</motif>
-    <page>LoginAccountManagerCronController</page>
-</CustomTab>
