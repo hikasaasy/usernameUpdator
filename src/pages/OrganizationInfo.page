@@ -1,9 +1,50 @@
-<apex:page controller="OrganizationInfoController" action="{!init}">
-    <apex:pageMessages ></apex:pageMessages>
-    <apex:pageBlock >
-    	<apex:pageBlockSection >
-        	<apex:outputField value="{!org.Name}"/>
-        	<apex:outputField value="{!org.TrialExpirationDate}"/>
-        </apex:pageBlockSection>
-    </apex:pageBlock>
+<apex:page controller="OrganizationInfoController" sidebar="false">
+    <apex:form >
+<!--
+		<br/>{!$CurrentPage.url}
+        <br/>{!find('/apex', $CurrentPage.url)}
+        <br/>{!len($CurrentPage.url)}
+        <br/>{!right($CurrentPage.url, len($CurrentPage.url) - find('/apex', $CurrentPage.url) + 1 )}
+        <br/>
+-->
+		<apex:pageBlock title="組織の有効期限アラート設定">
+            <apex:pageMessages ></apex:pageMessages>
+            <apex:pageBlockSection title="設定情報" columns="1" rendered="{!and(not(isnull(org.TrialExpirationDate)), alertOptionsSize!=0)}">
+                <apex:pageBlockSectionItem >
+                	<apex:outputLabel >アラート通知日</apex:outputLabel>
+                    <apex:outputPanel >
+                        
+                        <apex:outputText value="有効期限 ({0, date,yyyy/MM/dd HH:mm:ss}) の"><apex:param value="{!org.TrialExpirationDate+9/24}"/></apex:outputText>
+                        
+                        <apex:selectList value="{!alertBefore}" size="1">
+                            <apex:selectOptions value="{!alertOptions}"></apex:selectOptions>
+                        </apex:selectList>
+                        日前&nbsp;&nbsp;&nbsp;
+                        <apex:commandButton value="通知登録" action="{!regist}"/>
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+            <apex:pageBlockSection title="組織情報">
+                <apex:outputField label="組織名" value="{!org.Name}"/>
+                <apex:outputField label="組織の有効期限" value="{!org.TrialExpirationDate}"/>
+            </apex:pageBlockSection>
+            <apex:pageBlockSection title="管理者情報">
+                <apex:outputField label="管理者名" value="{!user.Name}"/>
+                <apex:outputField label="管理者ユーザ名" value="{!user.UserName}"/>
+                <apex:outputField label="管理者メールアドレス" value="{!user.Email}"/>
+            </apex:pageBlockSection>
+            <apex:pageBlockSection title="ジョブ情報" columns="1" rendered="{!not(isnull(org.TrialExpirationDate))}">
+                <apex:outputText rendered="{!cronsSize==0}">未登録</apex:outputText>
+                <apex:pageBlockTable var="c" value="{!crons}" rendered="{!cronsSize!=0}">
+                    <apex:column style="text-align:center;" >
+                        <apex:outputLink value="/ui/setup/apex/batch/ScheduleBatchApexPage?retURL={!URLENCODE(right($CurrentPage.url, len($CurrentPage.url) - find('/apex', $CurrentPage.url) + 1 ))}&job_name={!URLENCODE(c.CronJobDetail.Name)}&delID={!c.id}&
+setupid=ScheduledJobs">削除</apex:outputLink>
+                    </apex:column>
+                	<apex:column headerValue="ジョブ名" value="{!c.CronJobDetailId}"/>
+                	<apex:column headerValue="実行時刻" value="{!c.NextFireTime}"/>
+                	<apex:column headerValue="ジョブ登録日" value="{!c.CreatedDate}"/>
+                </apex:pageBlockTable>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
 </apex:page>
