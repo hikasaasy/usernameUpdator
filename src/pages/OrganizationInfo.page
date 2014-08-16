@@ -23,15 +23,21 @@
                         <apex:commandButton value="通知登録" action="{!regist}"/>
                     </apex:outputPanel>
                 </apex:pageBlockSectionItem>
+<!-- 
+ -->
             </apex:pageBlockSection>
-            <apex:pageBlockSection title="組織情報">
+             <apex:pageBlockSection title="組織・管理者情報" columns="1">
                 <apex:outputField label="組織名" value="{!org.Name}"/>
                 <apex:outputField label="組織の有効期限" value="{!org.TrialExpirationDate}"/>
+<!-- 
             </apex:pageBlockSection>
             <apex:pageBlockSection title="管理者情報">
+-->
                 <apex:outputField label="管理者名" value="{!user.Name}"/>
                 <apex:outputField label="管理者ユーザ名" value="{!user.UserName}"/>
                 <apex:outputField label="管理者メールアドレス" value="{!user.Email}"/>
+<!-- 
+ -->
             </apex:pageBlockSection>
             <apex:pageBlockSection title="ジョブ情報" columns="1" rendered="{!not(isnull(org.TrialExpirationDate))}">
                 <apex:outputText rendered="{!cronsSize==0}">未登録</apex:outputText>
